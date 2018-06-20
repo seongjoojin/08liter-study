@@ -1,64 +1,56 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        ex-nuxt
-      </h1>
-      <h2 class="subtitle">
-        test project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+  <h1>hello world</h1>
 </template>
-
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+  export default {
 
-export default {
-  components: {
-    AppLogo
+    // vue 인스턴스가 생성되기 전 store 초기화
+    fetch({store, params}){
+    },
+
+    // 인스턴스가 생성될 때 호출
+    created () {
+    },
+
+    // 비동기적으로 데이터 생성 json 형태로 반환하면 data ()와 머지됨
+    asyncData (context) {
+      return {}
+    },
+
+    // 데이터 생성
+    data () {
+      return {}
+    },
+
+    // 없어도 됨!, 해당 페이지 <head> 커스텀마이징
+    head () {
+      return {
+        title: '',
+        meta: [
+          { hid: '고유값', name: '설명', content: '커스텀 설명' }
+        ]
+      }
+    },
+
+    // 해당 파일에 동작시킬 메소드 정의
+    methods: {
+    },
+
+    // 복잡한 계산식일 때 computed 이용
+    computed: {
+    },
+
+    // 외부 컴포넌트 추가{a,b,c}의 형태로 작성. 각각 컴포넌트는 import a from 'a'로 가져옴
+    components: {
+    },
+
+    // 없어도 됨!, layout 설정, 기본 레이아웃 사용시 지워도 됨
+    layout: '',
+
+    // 없어도 됨!, 미들웨어 설정, middleware : 'authenticated'는 middleware 디렉토리의 authenticated.js 파일 실행
+    middleware:'',
+
+    // 없어도 됨!, 최상단 true, 최하단 false
+    scrollToTop: true || false
   }
-}
 </script>
-
-<style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
