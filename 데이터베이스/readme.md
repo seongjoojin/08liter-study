@@ -205,7 +205,7 @@ id가 1인 값을 조회함. 2개 이상의 조건을 검색하거나 여러 관
 
 like 문을 너무 남용하면 성능 저하가 일어날 수 있으므로 되도록 =을 이용하여 검사를 하는게 좋음.
 
-## UPDATE 문을 이용한 데이터 수정
+### UPDATE 문을 이용한 데이터 수정
 
 ```
 UPDATE [테이블 명] SET [수정값] WHERE [조건];
@@ -215,10 +215,93 @@ UPDATE 문에서 가장 중요한 점은 WHERE 가 꼭 있어야 한다는 점.
 
 다수의 컬럼은 수정하고 싶을 땐 *SET 컬럼 = 값, 컬럼 = 값* 형태로 나열하면 됨
 
-## DELETE 문을 이용한 데이터 삭제
+### DELETE 문을 이용한 데이터 삭제
 
 ```
 DELETE FROM [테이블 명] WHERE [조건];
 ```
 
 DELETE은 WHERE가 없으면 모든 데이터를 삭제함.
+
+### JOIN
+
+다수의 테이블을 하나의 검색 결과로 조회할 수 있음
+
+join을 이용할 때 다수의 테이블을 명시하게 됨. 그러므로 컬럼명만 적으면 어느 테이블의 컬럼인지 알 수 없으므로 *테이블.컬럼*의 형태로 작성함.
+
+데이터베이스를 설계하면서 가장 중효한 건 중복된 데이터를 만들지 않는 것임.
+
+이러한 형태로 데이터베이스를 설계하는 방식을 정규화라고 함.
+
+서비스가 커질수록 구조를 잘 설계하고 중복되는 데이터를 만들지 않아야 유지보수 비용을 최소화 할 수 있음.
+
+그렇지만 정규화를 하면 할수록 테이블이 쪼개지기 때문에 쿼리문을 작성하는데 어려움이 있음. 또한, 다른 테이블을 조회하기 때문에 성능상 이슈가 발생할 수 있음.
+
+### database 연결
+
+node.js MySQL에 연결하기 위해 mysql이라는 패키지를 사용함.
+
+```
+npm init
+
+npm install -s mysql
+```
+
+```
+const mysql = require('mysql')
+
+let db = mysql.createConnection({
+    host:'127.0.0.1',
+    port:'3306',
+    user:'root'
+    password:'',
+    database:'boards'
+});
+```
+
+mysql 패키지를 require을 이용하여 가져옴. createConnection을 호출하여 디비 연결 객체를 만들어 줌.
+
+- host : 서버 주소, 여기서 서버란 디비서버를 의미함 (127.0.0.1은 로컬로 접속한다는 의미)
+- port : 해당 서버의 포트 번호(MySQL의 기본 포트 번호는 3306번 임)
+- user : 유저 이름
+- password : 비밀번호
+- database : 데이터베이스 이름(데이터베이스에서 CREATE DATABASE로 생성한 이름)
+
+### 디비 조작
+
+연결된 DB 객체를 이용하여 데이터베이스를 조작할 수 있음
+
+디비를 조작하는 방법은 query 함수를 호출하여 앞에서 배운 쿼리문을 넣어주면 끝임. 
+
+콜백으로는 결과 값을 전달 받음. 콜백으로 전달받을 땐 첫 번째 인자는 에러값, 두 번째 인자로 데이터를 받음.
+
+```
+db.query('SELECT *FROM users', (err, data) => {
+    if(err) console.log('err 발생 : ' + err)
+    else console.log(data);
+});
+```
+
+### replace
+
+WHERE를 이용하면 서버에 요청한 id를 통해 해당 데이터만 조회할 수 있음.
+
+동적으로 바뀌는 위치를 물음표(?)로 넣어줌. query에서 두 번째 인자로 물음표에 들어갈 값을 리스트 형태로 넣어주면 됨. 쿼리가 동작할 땐 물음표가 두 번째 인자로 전달한 리스트에서 순서대로 대체됨.
+
+
+```
+let sql = `SELECT *FROM users WHERE id=? AND name=? AND age=?`
+db.query(sql, [1, 'jinseongjoo', 25], (err, data) => {
+    res.join(data)
+})
+```
+
+위와 같은 형태로 작성되면 SELECT *FROM users WHERE id=1 AND name=jinseongjoo AND age=25로 바뀐 쿼리문을 사용함.
+
+직접 쿼리문을 만드는 것 보다 ?를 사용하여 대체하는 방법을 사용하는 것이 좋음.
+
+### promise / async / await
+
+코드 유지를 위해서는 콜백 형태를 그냥 사용하는 것보다 Promise 패턴이나 async/await를 사용하는 것이 유지보수 하는데 수월함.
+
+*콜백 형태, Promise 패턴, async/await* 중 편한 방법을 사용하면 됨.
