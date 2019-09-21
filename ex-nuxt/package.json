@@ -4,9 +4,9 @@
     "dev": "nuxt"
   },
   "dependencies": {
-    "nuxt": "^1.0.0"
+    "nuxt": "^2.9.2"
   },
   "devDependencies": {
-    "nuxt": "^1.1.1"
+    "nuxt": "^2.9.2"
   }
 }
