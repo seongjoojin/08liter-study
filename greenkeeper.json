@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "ex-nuxt/package.json",
+        "express/express-ex/package.json"
+      ]
+    }
+  }
+}
